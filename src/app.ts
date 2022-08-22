@@ -7,9 +7,7 @@ import createError, { HttpError } from 'http-errors';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-import cors from 'cors';
-
-// import indexRouter from './routes/index';
+import indexRouter from './routes/index';
 // import usersRouter  from './routes/auth';
 import airRouter from './routes/air';
 import nutrisiRouter from './routes/nutrisi';
@@ -25,10 +23,9 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cors);
 app.use(express.static(path.join(__dirname, '../', 'public')));
 
-// app.use('/', indexRouter);
+app.use('/', indexRouter);
 // app.use('/auth', usersRouter);
 app.use('/air', airRouter);
 app.use('/nutrisi', nutrisiRouter);
