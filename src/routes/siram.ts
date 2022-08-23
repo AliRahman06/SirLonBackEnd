@@ -6,9 +6,12 @@ import Db from '../libs/db';
 // untuk mendapatkan berapakali siram air dalam sehari
 router.get('/air', async function(req: Request, res: Response,  next: NextFunction){
     try {
-        // const data = await Db.query('SELECT * FROM `tbl_air` WHERE YEAR(time) = YEAR(NOW()) AND MONTH(time) = MONTH(NOW()) AND DAY(time) = DAY(NOW())');
-        // const data = await Db.query('SELECT COUNT(id) AS totalSiram FROM tbl_siram_air WHERE (YEAR(time) = YEAR(NOW()) AND MONTH(time) = MONTH(NOW()) AND DAY(time) = DAY(NOW()))');
-        const data = await Db.query('SELECT COUNT(siram_air) AS totalSiram FROM tbl_siram_air WHERE (YEAR(time) = YEAR(NOW()) AND MONTH(time) = MONTH(NOW()) AND DAY(time) = DAY(NOW()) AND siram_air = 1)');
+        const response = await Db.query('SELECT COUNT(siram_air) AS totalSiram FROM tbl_siram_air WHERE (YEAR(time) = YEAR(NOW()) AND MONTH(time) = MONTH(NOW()) AND DAY(time) = DAY(NOW()) AND siram_air = 1)');
+        const data = JSON.parse(JSON.stringify(response, (key, value) =>
+            typeof value === 'bigint'
+                ? value.toString()
+                : value
+        ));
         res.json(data);
     } catch (error) {
         console.log(error);
@@ -18,7 +21,12 @@ router.get('/air', async function(req: Request, res: Response,  next: NextFuncti
 // muntuk mendapatkan berapakali siram nutrisi dalam sebulan
 router.get('/nutrisi', async function(req: Request, res: Response, next: NextFunction){
     try {
-        const data = await Db.query('SELECT COUNT(siram_nutrisi) AS totalSiram FROM tbl_siram_nutrisi WHERE (YEAR(time) = YEAR(NOW()) AND MONTH(time) = MONTH(NOW()) AND siram_nutrisi = 1)');
+        const response = await Db.query('SELECT COUNT(siram_nutrisi) AS totalSiram FROM tbl_siram_nutrisi WHERE (YEAR(time) = YEAR(NOW()) AND MONTH(time) = MONTH(NOW()) AND siram_nutrisi = 1)');
+        const data = JSON.parse(JSON.stringify(response, (key, value) =>
+        typeof value === 'bigint'
+            ? value.toString()
+            : value 
+    ));
         res.json(data);
     } catch (error) {
         console.log(error);

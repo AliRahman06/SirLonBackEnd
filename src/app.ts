@@ -8,6 +8,7 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import indexRouter from './routes/index';
+import pubsub from './routes/pubsub';
 // import usersRouter  from './routes/auth';
 import airRouter from './routes/air';
 import nutrisiRouter from './routes/nutrisi';
@@ -24,7 +25,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../', 'public')));
-
+app.use('/pubsub', pubsub);
 app.use('/', indexRouter);
 // app.use('/auth', usersRouter);
 app.use('/air', airRouter);
