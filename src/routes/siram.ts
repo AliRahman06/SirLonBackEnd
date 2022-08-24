@@ -36,7 +36,8 @@ router.get('/nutrisi', async function(req: Request, res: Response, next: NextFun
 // untuk mengecek status penyiraman air
 router.get('/air/cek', async function(req: Request, res: Response, next: NextFunction){
     try {
-        const data = await Db.query('SELECT * FROM tbl_siram_air ORDER BY id_siram DESC LIMIT 1');
+        // const data = await Db.query('SELECT * FROM tbl_siram_air ORDER BY id_siram DESC LIMIT 1');
+        const data = await Db.query('SELECT siram_air AS kondisi FROM tbl_siram_air ORDER BY id_siram DESC LIMIT 1');
         res.json(data);
     } catch (error) {
         console.log(error);
@@ -46,7 +47,7 @@ router.get('/air/cek', async function(req: Request, res: Response, next: NextFun
 // untuk mengecek status penyiraman nutrisi
 router.get('/nutrisi/cek', async function(req: Request, res: Response, next: NextFunction){
     try {
-        const data = await Db.query('SELECT * FROM tbl_siram_nutrisi ORDER BY id_siram_nutrisi DESC LIMIT 1');
+        const data = await Db.query('SELECT siram_nutrisi AS kondisi FROM tbl_siram_nutrisi ORDER BY id_siram_nutrisi DESC LIMIT 1');
         res.json(data);
     } catch (error) {
         console.log(error);
@@ -58,19 +59,23 @@ router.get('/nutrisi/cek', async function(req: Request, res: Response, next: Nex
 router.post('/air', async function(req: Request, res: Response){
     const input = req.body;
     try {
-        await Db.query('INSERT INTO tbl_siram VALUES (NULL,?,NOW()',[input.siram_air])
+        await Db.query('INSERT INTO tbl_siram VALUES (NULL,?,NOW())',[input.siram_air]);
     } catch (error) {
         console.log(error);
-    }
+    } finally {
+        res.json({message: 'Berhasil tambah'});
+    } 
 });
 
 router.post('/nutrisi', async function(req: Request, res: Response){
     const input = req.body;
     try {
-        await Db.query('INSERT INTO tbl_siram_nutrisi VALUES (NULL,?,NOW()',[input.siram_nutrisi])
+        await Db.query('INSERT INTO tbl_siram_nutrisi VALUES (NULL,?,NOW())',[input.siram_nutrisi]);
     } catch (error) {
         console.log(error);
-    }
+    } finally {
+        res.json({message: 'Berhasil tambah'});
+    } 
 });
 
 export default router;
