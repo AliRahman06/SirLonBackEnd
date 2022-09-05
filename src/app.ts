@@ -31,11 +31,13 @@ app.use('/siram', siramRouter);
 // catch 404 and forward to error handler
 app.use(function(req: Request, res: Response, next:NextFunction) {
   next(createError(404));
+  console.log('masuk');
 });
 
 // error handler
 app.use(function(err:HttpError, req: Request, res: Response, next: NextFunction) {
   // set locals, only providing error in development
+  // console.log('Masuk')
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
